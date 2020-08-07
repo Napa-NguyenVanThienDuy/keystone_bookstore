@@ -1,7 +1,9 @@
 const { Keystone } = require("@keystonejs/keystone");
 const { GraphQLApp } = require("@keystonejs/app-graphql");
 const { AdminUIApp } = require("@keystonejs/app-admin-ui");
-const { KnexAdapter: Adapter } = require("@keystonejs/adapter-knex");
+// const { KnexAdapter: Adapter } = require("@keystonejs/adapter-knex");
+// const mongoose = require('mongoose');
+const { MongooseAdapter } = require("@keystonejs/adapter-mongoose");
 const { PasswordAuthStrategy } = require("@keystonejs/auth-password");
 
 const { Book } = require("./Schema/Book.js");
@@ -10,12 +12,6 @@ const { Category } = require("./Schema/Category.js");
 const { User } = require("./Schema/User.js");
 
 const PROJECT_NAME = "bookstore";
-const adapterConfig = {
-  dropDatabase: false,
-  knexOptions: {
-    connection: "postgres://postgres:admin@localhost:5432/bookstore",
-  },
-};
 
 /**
  * You've got a new KeystoneJS Project! Things you might want to do next:
@@ -24,7 +20,9 @@ const adapterConfig = {
  */
 
 const keystone = new Keystone({
-  adapter: new Adapter(adapterConfig),
+  adapter: new MongooseAdapter({
+    mongoUri: "mongodb://localhost:27017/bookstore",
+  }),
 });
 console.log(Book);
 keystone.createList("Book", Book);
